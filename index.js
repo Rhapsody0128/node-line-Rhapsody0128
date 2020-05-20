@@ -98,7 +98,7 @@ const search = async (keyword) => {
     if ($('.mt-3.mx-2').eq(0).find('img').attr('src') === undefined) {
       re = `找不到關於${keyword}的梗圖哦`
     } else {
-      for (let i = 0; i < 2; i++) {
+      for (let i = 0; i < 4; i++) {
         re.push({
           type: 'image',
           originalContentUrl: array[i],
@@ -123,7 +123,6 @@ const search = async (keyword) => {
   console.log(re)
   return re
 }
-search('陳')
 const hot = async (x) => {
   let re = []
   const array = []
