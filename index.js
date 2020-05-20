@@ -85,25 +85,29 @@ const wtf = async () => {
 const search = async (keyword) => {
   let re = []
   const array = []
+  const array2 = []
   try {
     const html = await rp('https://memes.tw/maker?q=' + encodeURI(keyword))
-
     const $ = cheerio.load(html)
 
     for (let i = 0; i < $('.-shadow.mt-3.mx-2').length; i++) {
       array.push($('.mt-3.mx-2').eq(i).find('img').attr('src'))
+      array2.push($('.mt-3.mx-2').eq(i).find('b').text())
     }
-
-    for (let i = 0; i < 5; i++) {
-      re.push({
-        type: 'image',
-        originalContentUrl: array[i],
-        previewImageUrl: array[i]
-      })
+    console.log(array2)
+    if ($('.mt-3.mx-2').eq(0).find('img').attr('src') === undefined) {
+      re = `找不到關於${keyword}的梗圖哦`
+    } else {
+      for (let i = 0; i < 5; i++) {
+        re.push({
+          type: 'image',
+          originalContentUrl: array[i],
+          previewImageUrl: array[i]
+        }, array2[i])
+      }
     }
   } catch (error) {
     console.log(error.message)
-
     if (error.name === 'StatusCodeError' && error.statusCode === 404) {
       search()
     } else {
@@ -116,7 +120,7 @@ const search = async (keyword) => {
   console.log(re)
   return re
 }
-
+search('陳')
 const hot = async (x) => {
   let re = []
   const array = []
@@ -253,7 +257,6 @@ const year = async (x) => {
   }
   return re
 }
-
 bot.listen('/', process.env.PORT, () => {
   // 在port啟動
   console.log('機器人已啟動')
@@ -268,10 +271,6 @@ bot.on('message', async (event) => {
   }
   if (event.message.text.slice(0, 1) === '找') {
     reply = await search(event.message.text.slice(1, 15))
-    console.log(reply)
-    if (reply === []) {
-      reply = '找不到這個關鍵字的梗圖哦'
-    }
   } else {
     switch (event.message.text) {
       case '隨機':
