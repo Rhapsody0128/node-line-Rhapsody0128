@@ -23,7 +23,7 @@ const img = async () => {
     return rand
   }
   let re = {}
-  let rand = await findnum()
+  const rand = await findnum()
 
   try {
     let found = ''
@@ -56,7 +56,7 @@ const wtf = async () => {
     return rand
   }
   let re = {}
-  let rand = await findnum()
+  const rand = await findnum()
 
   try {
     let found = ''
@@ -113,7 +113,7 @@ const search = async (keyword) => {
       }
     }
   }
-  console.log(re);
+  console.log(re)
   return re
 }
 
@@ -198,7 +198,7 @@ const week = async (x) => {
       text: '錯誤'
     }
   }
-  console.log(re);
+  console.log(re)
   return re
 }
 // week(0)
@@ -268,9 +268,7 @@ bot.on('message', async (event) => {
   }
   if (event.message.text.includes('找')) {
     reply = await search(event.message.text.slice(1, 15))
-  }
-  else {
-
+  } else {
     switch (event.message.text) {
       case '隨機':
         reply = await img()
@@ -294,7 +292,7 @@ bot.on('message', async (event) => {
         reply = await year(0 + x)
         break
       case '功能':
-        reply = `☑隨機：隨機抽取一張梗圖\n☑抽：隨機抽網友做的梗圖\n☑週：每週排行列出五張圖\n☑月：每月排行列出五張圖\n☑年：年度排行列出五張圖\n☑新：最新排行列出五張圖\n☑熱：熱門排行列出五張圖\n☑找x：搜尋x關鍵字的圖\n\n(年、月、週、熱、新，五個指令前面可以輸入數字，會從第n個熱門排行的圖後列出五張圖  Ex:7週)`
+        reply = '☑隨機：隨機抽取一張梗圖\n☑抽：隨機抽網友做的梗圖\n☑週：每週排行列出五張圖\n☑月：每月排行列出五張圖\n☑年：年度排行列出五張圖\n☑新：最新排行列出五張圖\n☑熱：熱門排行列出五張圖\n☑找x：搜尋x關鍵字的圖\n\n(年、月、週、熱、新，五個指令前面可以輸入數字，會從第n個排行{排行榜共20張}的圖後列出五張圖，沒輸入會預設最高排行的5張，  Ex:7週)'
         break
     }
   }
