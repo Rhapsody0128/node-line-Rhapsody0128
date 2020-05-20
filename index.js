@@ -84,7 +84,6 @@ const wtf = async () => {
 
 const search = async (keyword) => {
   let re = []
-  let re2 = []
   const array = []
   const array2 = []
   try {
@@ -97,16 +96,12 @@ const search = async (keyword) => {
     }
     if ($('.mt-3.mx-2').eq(0).find('img').attr('src') === undefined) {
       re = `找不到關於${keyword}的梗圖哦`
-      re2 = re
     } else {
       for (let i = 0; i < 5; i++) {
         re.push({
           type: 'image',
           originalContentUrl: array[i],
           previewImageUrl: array[i]
-        }, {
-          type: 'text',
-          text: array2[i]
         })
       }
     }
@@ -268,18 +263,13 @@ bot.on('message', async (event) => {
   // 當收到訊息時
   console.log(event)
   let reply = {}
-  let reply2 = {}
-  let all = {}
 
   let x = parseInt(event.message.text)
   if (isNaN(x)) {
     x = ''
   }
   if (event.message.text.slice(0, 1) === '找') {
-    all = await search(event.message.text.slice(1, 15))
-    reply2 = all.splice(0, 4)
-    event.reply(reply2)
-    reply = all.splice(5, 9)
+    reply = await search(event.message.text.slice(1, 15))
   } else {
     switch (event.message.text) {
       case '隨機':
