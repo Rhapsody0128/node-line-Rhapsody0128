@@ -268,6 +268,7 @@ bot.on('message', async (event) => {
   }
   if (event.message.text.slice(0, 1) === '找') {
     reply = await search(event.message.text.slice(1, 15))
+    console.log(reply)
     if (reply === []) {
       reply = '找不到這個關鍵字的梗圖哦'
     }
