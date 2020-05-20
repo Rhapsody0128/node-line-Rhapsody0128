@@ -103,7 +103,10 @@ const search = async (keyword) => {
           type: 'image',
           originalContentUrl: array[i],
           previewImageUrl: array[i]
-        }, array2[i])
+        }, {
+          type: 'text',
+          text: array2[i]
+        })
       }
     }
   } catch (error) {
