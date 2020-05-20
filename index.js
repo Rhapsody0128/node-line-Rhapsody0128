@@ -266,8 +266,11 @@ bot.on('message', async (event) => {
   if (isNaN(x)) {
     x = ''
   }
-  if (event.message.text.includes('找')) {
+  if (event.message.text.slice(0, 1) === '找') {
     reply = await search(event.message.text.slice(1, 15))
+    if (reply === []) {
+      reply = '找不到這個關鍵字的梗圖哦'
+    }
   } else {
     switch (event.message.text) {
       case '隨機':
