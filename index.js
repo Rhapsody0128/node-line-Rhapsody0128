@@ -108,18 +108,19 @@ const search = async (keyword) => {
           array2.push($$('.mb-3.border-bottom.pb-3').eq(i).find('img').attr('data-src'))
         }
         for (let i = 0; i < 5; i++) {
-          re.push({
-            type: 'image',
-            originalContentUrl: array2[i],
-            previewImageUrl: array2[i]
-          })
+          if (array2[i] !== undefined) {
+            re.push({
+              type: 'image',
+              originalContentUrl: array2[i],
+              previewImageUrl: array2[i]
+            })
+          }
         }
       } catch (error) {
         console.log(error)
       }
       return re
     }
-
     if (x !== undefined) {
       await searchin(x)
     } else {
@@ -127,13 +128,11 @@ const search = async (keyword) => {
         re = `找不到關於${keyword}的梗圖哦`
       } else {
         for (let i = 0; i < 5; i++) {
-          if (array[i] !== undefined) {
-            re.push({
-              type: 'image',
-              originalContentUrl: array[i],
-              previewImageUrl: array[i]
-            })
-          }
+          re.push({
+            type: 'image',
+            originalContentUrl: array[i],
+            previewImageUrl: array[i]
+          })
         }
       }
     }
