@@ -294,14 +294,20 @@ bot.on('message', async (event) => {
   // 當收到訊息時
   console.log(event)
   let reply = {}
+  let text = ''
 
-  let x = parseInt(event.message.text)
-  if (isNaN(x)) {
-    x = ''
-  }
   if (event.message.text.slice(0, 1) === '找') {
     reply = await search(event.message.text.slice(1, 15))
   } else {
+    const msgarray = event.message.text.split('-')
+    let x = msgarray[1]
+    x = parseInt(x)
+    console.log(x)
+    if (isNaN(x)) {
+      x = ''
+    } else {
+      text = '-' + x
+    }
     switch (event.message.text) {
       case '隨機':
         reply = await img()
@@ -309,19 +315,19 @@ bot.on('message', async (event) => {
       case '抽':
         reply = await wtf()
         break
-      case `${x}新`:
+      case `新${text}`:
         reply = await newpic(0 + x)
         break
-      case `${x}熱`:
+      case `熱${text}`:
         reply = await hot(0 + x)
         break
-      case `${x}週`:
+      case `週${text}`:
         reply = await week(0 + x)
         break
-      case `${x}月`:
+      case `月${text}`:
         reply = await month(0 + x)
         break
-      case `${x}年`:
+      case `年${text}`:
         reply = await year(0 + x)
         break
       case '功能':
