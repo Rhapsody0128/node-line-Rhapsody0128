@@ -86,23 +86,53 @@ const search = async (keyword) => {
   let re = []
   const array = []
   const array2 = []
+  keyword = keyword.split('-')
+  const x = keyword[1]
+  keyword = keyword[0]
+  console.log(x)
   try {
     const html = await rp('https://memes.tw/maker?q=' + encodeURI(keyword))
     const $ = cheerio.load(html)
 
     for (let i = 0; i < $('.-shadow.mt-3.mx-2').length; i++) {
       array.push($('.mt-3.mx-2').eq(i).find('img').attr('src'))
-      array2.push($('.mt-3.mx-2').eq(i).find('b').text())
     }
-    if ($('.mt-3.mx-2').eq(0).find('img').attr('src') === undefined) {
-      re = `找不到關於${keyword}的梗圖哦`
+
+    const searchin = async (x) => {
+      x--
+      try {
+        const pick = ($('.mt-3.mx-2').eq(x).find('a').attr('href'))
+        const html2 = await rp('https://memes.tw/' + pick)
+        const $$ = cheerio.load(html2)
+        for (let i = 0; i < $$('.mb-3.border-bottom.pb-3').length; i++) {
+          array2.push($$('.mb-3.border-bottom.pb-3').eq(i).find('img').attr('data-src'))
+        }
+        for (let i = 0; i < 5; i++) {
+          re.push({
+            type: 'image',
+            originalContentUrl: array2[i],
+            previewImageUrl: array2[i]
+          })
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      return re
+    }
+
+    if (x !== undefined) {
+      await searchin(x)
     } else {
-      for (let i = 0; i < 5; i++) {
-        re.push({
-          type: 'image',
-          originalContentUrl: array[i],
-          previewImageUrl: array[i]
-        })
+      if ($('.mt-3.mx-2').eq(0).find('img').attr('src') === undefined) {
+        re = `找不到關於${keyword}的梗圖哦`
+      } else {
+        for (let i = 0; i < 5; i++) {
+          re.push({
+            type: 'image',
+            originalContentUrl: array[i],
+            previewImageUrl: array[i]
+          })
+        }
       }
     }
   } catch (error) {
@@ -119,7 +149,7 @@ const search = async (keyword) => {
   console.log(re)
   return re
 }
-search('陳')
+
 const hot = async (x) => {
   let re = []
   const array = []
@@ -147,6 +177,7 @@ const hot = async (x) => {
   console.log(re)
   return re
 }
+
 const newpic = async (x) => {
   let re = []
   const array = []
@@ -203,7 +234,7 @@ const week = async (x) => {
   console.log(re)
   return re
 }
-// week(0)
+
 const month = async (x) => {
   let re = []
   const array = []
@@ -294,7 +325,7 @@ bot.on('message', async (event) => {
         reply = await year(0 + x)
         break
       case '功能':
-        reply = '☑隨機：隨機抽取一張梗圖\n☑抽：隨機抽網友做的梗圖\n☑週：每週排行列出五張圖\n☑月：每月排行列出五張圖\n☑年：年度排行列出五張圖\n☑新：最新排行列出五張圖\n☑熱：熱門排行列出五張圖\n☑找x：搜尋x關鍵字的圖\n\n(年、月、週、熱、新，五個指令前面可以輸入數字，會從第n個排行的圖後列出五張圖，沒輸入會預設最高排行的5張，排行榜共20張圖，因此n最多可輸入15  Ex:7週=>每周排行的第7張圖後5張=第8.9.10.11.12張圖)'
+        reply = '☑隨機：隨機抽取一張梗圖\n☑抽：隨機抽網友做的梗圖\n☑週：每週排行列出五張圖\n☑月：每月排行列出五張圖\n☑年：年度排行列出五張圖\n☑新：最新排行列出五張圖\n☑熱：熱門排行列出五張圖\n☑找：搜關鍵字的五張原圖\n\n在找到的原圖後面加上-n可以列出五張關鍵圖片第n張的完整梗圖\nEx:找貓-4=>找出在"找貓"出現的五張原圖中的第四張原圖的再製作梗圖\n\n年、月、週、熱、新，五個指令前面可以輸入數字，會從第n個排行的圖後列出五張圖，沒輸入會預設最高排行的5張，排行榜共20張圖，n最多可輸入15  Ex:7週=>每周排行的第7張圖後5張=第8.9.10.11.12張圖'
         break
     }
   }
