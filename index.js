@@ -127,11 +127,13 @@ const search = async (keyword) => {
         re = `找不到關於${keyword}的梗圖哦`
       } else {
         for (let i = 0; i < 5; i++) {
-          re.push({
-            type: 'image',
-            originalContentUrl: array[i],
-            previewImageUrl: array[i]
-          })
+          if (array[i] !== undefined) {
+            re.push({
+              type: 'image',
+              originalContentUrl: array[i],
+              previewImageUrl: array[i]
+            })
+          }
         }
       }
     }
